@@ -49,7 +49,7 @@ class NoteDatabaseTest {
     }
 
     @Test
-    fun insertNoteTest() = runBlocking {
+    fun insertAndDeleteNoteTest() = runBlocking {
         val note = Note("1", "Test Description","19,Jul, 2023-22-01")
         noteDatabase.getNotesDao().insert(note)
 
@@ -57,6 +57,13 @@ class NoteDatabaseTest {
         assertThat(allNotes!!.size, equalTo(1))
         assertThat(allNotes[0].id, equalTo(note.id))
         assertThat(allNotes[0].noteTitle, equalTo(note.noteTitle))
+        assertThat(allNotes[0].noteDescription, equalTo(note.noteDescription))
+        assertThat(allNotes[0].timeStamp, equalTo(note.timeStamp))
+
+        noteDatabase.getNotesDao().delete(note)
+
+        val deletedNote = noteDatabase.getNotesDao().delete(note)
+        assertThat(deletedNote, equalTo(null))
     }
 
     //unit tests for delete, update, and getAllNotes operations.

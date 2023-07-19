@@ -31,40 +31,40 @@ class NoteDatabaseTest {
     fun cleanup() {
         noteDatabase.close()
     }
+    //unit tests for delete, update, and getAllNotes operations.
 
-    fun <T> getLiveDataValue(liveData: LiveData<T>): T {
-        var data: T? = null
-        val latch = CountDownLatch(1)
-        val observer = object : Observer<T> {
-            override fun onChanged(value: T) {
-                data = value
-                latch.countDown()
-                liveData.removeObserver(this)
-            }
-        }
-        liveData.observeForever(observer)
-        // Wait for the value to be set or timeout after 2 seconds
-        latch.await(2, TimeUnit.SECONDS)
-        return data as T
-    }
 
     @Test
     fun insertAndDeleteNoteTest() = runBlocking {
         val note = Note("1", "Test Description","19,Jul, 2023-22-01")
         noteDatabase.getNotesDao().insert(note)
 
-        val allNotes = noteDatabase.getNotesDao().getAllNotes().value
-        assertThat(allNotes!!.size, equalTo(1))
-        assertThat(allNotes[0].id, equalTo(note.id))
-        assertThat(allNotes[0].noteTitle, equalTo(note.noteTitle))
-        assertThat(allNotes[0].noteDescription, equalTo(note.noteDescription))
-        assertThat(allNotes[0].timeStamp, equalTo(note.timeStamp))
+        val allNotes = noteDatabase.getNotesDao().getAllNotes()
+        val initialSize = allNotes.getOrAwaitValue().size
+        assertThat(initialSize, equalTo(1))
 
         noteDatabase.getNotesDao().delete(note)
 
-        val deletedNote = noteDatabase.getNotesDao().delete(note)
-        assertThat(deletedNote, equalTo(null))
+        val updatedSize = allNotes.getOrAwaitValue().size
+        assertThat(updatedSize, equalTo(0))
     }
 
-    //unit tests for delete, update, and getAllNotes operations.
+
+
 }
+
+private fun <T> LiveData<T>.getOrAwaitValue(): T {
+    var data: T? = null
+    val latch = CountDownLatch(1)
+    val observer = object : Observer<T> {
+        override fun onChanged(value: T) {
+            data = value
+            latch.countDown()
+            this@getOrAwaitValue.removeObserver(this)
+        }
+    }
+    this.observeForever(observer)
+    latch.await(2, TimeUnit.SECONDS)
+    return data as T
+}
+

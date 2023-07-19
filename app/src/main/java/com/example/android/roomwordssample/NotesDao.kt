@@ -1,7 +1,10 @@
 package com.example.android.roomwordssample
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.room.*
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
 
 // annotation for dao class.
 @Dao
@@ -29,5 +32,6 @@ interface NotesDao {
     // below method is use to update the note.
     @Update
     suspend fun update(note: Note)
+
 
 }

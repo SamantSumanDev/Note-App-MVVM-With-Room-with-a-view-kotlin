@@ -11,20 +11,25 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="4dp">
+        android:layout_height="@dimen/_65sdp"
+        >
 
         <!--text view for displaying our note text-->
         <TextView
             android:id="@+id/idTVNote"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="3dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_toLeftOf="@id/idIVDelete"
             android:padding="4dp"
             android:text="Note"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+
+            />
 
         <!--text view for displaying our last updated text-->
         <TextView
@@ -32,7 +37,10 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/idTVNote"
-            android:layout_margin="3dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="5dp"
             android:layout_toLeftOf="@id/idIVDelete"
             android:padding="4dp"
             android:text="Updated At"
@@ -53,6 +61,16 @@
             app:tint="@color/white" />
 
 
+        <View
+            android:id="@+id/vwColorBtm"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_5sdp"
+            android:background="#CDDC39"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+
+            />
 
     </RelativeLayout>
 
